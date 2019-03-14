@@ -13,6 +13,25 @@
   <style type="text/css">code{white-space: pre;}</style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.7.1/modernizr.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.js"></script>
+  <style type="text/css">
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; }
+code > span.dt { color: #902000; }
+code > span.dv { color: #40a070; }
+code > span.bn { color: #40a070; }
+code > span.fl { color: #40a070; }
+code > span.ch { color: #4070a0; }
+code > span.st { color: #4070a0; }
+code > span.co { color: #60a0b0; font-style: italic; }
+code > span.ot { color: #007020; }
+code > span.al { color: #ff0000; font-weight: bold; }
+code > span.fu { color: #06287e; }
+code > span.er { color: #ff0000; font-weight: bold; }
+  </style>
   <link rel="stylesheet" href="https://slimgroup.slim.gatech.edu/ScholMD/standalone/slimweb-scholmd-standalone-v0.1-latest.min.css">
 </head>
 <body>
@@ -46,7 +65,7 @@
 <p>Bas Peters<sup>*</sup>, Felix J. Herrmann<sup>#</sup><br /><sup>*</sup>University of British Columbia.<br /><sup>#</sup>Georgia Institute of Technology</p>
 </div>
 </header>
-<h2 id="preprint-paper-available-online-soon">[Preprint paper available online soon]</h2>
+<h2 id="preprint-paper"><a href="https://arxiv.org/abs/1903.03942">Preprint paper</a></h2>
 <h2 id="code-on-github-merged-with-setintersectionprojection"><a href="https://github.com/slimgroup/SetIntersectionProjection.jl">Code on github merged with SetIntersectionProjection</a></h2>
 <p>This is the documentation main page corresponding to the <strong>Julia 1.1</strong> software developed by Bas Peters and Felix J. Herrmann that computes projections of vectorized 2D and 3D images/models (<span class="math scholmd-math-inline">\(m \in \mathbb{R}^N\)</span>) onto a generalization of the Minkowski set: 
 <span class="math scholmd-math-display" style="display: block;">\[
@@ -88,9 +107,9 @@ x \in \mathcal{G}^{\text{data}}
 <li>this package is based on the <a href="https://petersbas.github.io/SetIntersectionProjectionDocs/">SetIntersecionProjection</a> package that was designed to compute projections onto intersections of sets. Not all SetIntersecionProjection features are available for generalized Minkowski sets at the moment.</li>
 <li>parametric typing for Float32 and Float64 support</li>
 <li>designed for small 2D up to larger 3D models/grids</li>
-<li>includes scripts to set up projectors and linear operators For 2D and 3D models</li>
+<li>includes scripts to set up projectors and linear operators for 2D and 3D models</li>
 <li>constraints may be defined for the matrix/tensor model and for columns/slices/fibers simultaneously</li>
-<li>linear operators may be: SparseMatrixCSC or <a href="https://github.com/slimgroup/JOLI.jl">JOLI</a> DCT/DFT/Curvelet matrix-free operators</li>
+<li>linear operators may be: SparseMatrixCSC or <a href="https://github.com/slimgroup/JOLI.jl">JOLI</a> DCT/DFT/Curvelet matrix-free operators. Software internally converts sparse matrices to compressed diagonal (CDS) format for MVPs where appropriate.</li>
 </ul>
 <h2 id="list-of-constraints-linear-operators">List of constraints &amp; linear operators</h2>
 <figure class="scholmd-float scholmd-table-float" id="set-overview">
@@ -132,11 +151,11 @@ x \in \mathcal{G}^{\text{data}}
 </tr>
 <tr class="even">
 <td style="text-align: left;">transform-domain nuclear norm</td>
-<td style="text-align: left;"><span class="math scholmd-math-inline">\(\{ m \: | \: \sum_{j=1}^k \lambda[j] \leq \sigma \}\)</span>, with <span class="math scholmd-math-inline">\(Am = \operatorname{vec}( \sum_{j=1}^{k}\lambda[j] u_j v_j^* )\)</span> is the SVD</td>
+<td style="text-align: left;"><span class="math scholmd-math-inline">\(\{ m \: | \: \sum_{j=1}^k \lambda[j] \leq \sigma \}\)</span>, with <span class="math scholmd-math-inline">\(Am = \operatorname{vec}( \sum_{j=1}^{k}\lambda[j] u_j v_j^\top )\)</span> is the SVD</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">transform-domain rank constraint</td>
-<td style="text-align: left;"><span class="math scholmd-math-inline">\(\{ m \: | \: Am = \operatorname{vec}( \sum_{j=1}^{r}\lambda[j] u_j v_j^*) \}\)</span>, <span class="math scholmd-math-inline">\(r &lt; \text{min}(n_z,n_x)\)</span></td>
+<td style="text-align: left;"><span class="math scholmd-math-inline">\(\{ m \: | \: Am = \operatorname{vec}( \sum_{j=1}^{r}\lambda[j] u_j v_j^\top) \}\)</span>, <span class="math scholmd-math-inline">\(r &lt; \text{min}(n_z,n_x)\)</span></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">subspace constraints</td>
@@ -194,6 +213,160 @@ x \in \mathcal{G}^{\text{data}}
 </tbody>
 </table></div>
 <div class="scholmd-float-caption"><figcaption><span class="scholmd-caption-head"><span class="scholmd-caption-head-prefix">Table</span><span class="scholmd-caption-head-label">2</span></span><span class="scholmd-caption-text">Overview of the linear operators that we currently set up. Software can work with any linear operator as long it is one of the types <code>SparseMatrixCSC</code> or <code>JOLI</code> operator. Possible conversion to CDS format happens in the software. Operator math is shown for the 2D case. Curvelets require the separate installation of the <a href="http://curvelet.org/software.html">CurveLab</a> software.</span></figcaption></div>
+</figure>
+<h2 id="a-first-example">A first example</h2>
+<p>Because the software is based on <a href="https://github.com/slimgroup/SetIntersectionProjection.jl">SetIntersectionProjection.jl</a>, it may be useful to have a look at the <a href="https://petersbas.github.io/SetIntersectionProjectionDocs/">documentation</a> for that package. This example is pretty self-contained however so we hope it explains some things by itself. Note that this is for Julia 1.1</p>
+<pre class="sourceCode julia"><code class="sourceCode julia">
+using SetIntersectionProjection
+using MAT
+using LinearAlgebra
+
+mutable struct compgrid
+  d :: <span class="dt">Tuple</span>
+  n :: <span class="dt">Tuple</span>
+<span class="kw">end</span>
+
+<span class="co">#PARSDMM options:</span>
+options    = PARSDMM_options()
+options.FL = <span class="dt">Float32</span>
+
+<span class="co">#select working precision</span>
+<span class="kw">if</span> options.FL==<span class="dt">Float64</span>
+  TF = <span class="dt">Float64</span>
+<span class="kw">elseif</span> options.FL==<span class="dt">Float32</span>
+  TF = <span class="dt">Float32</span>
+<span class="kw">end</span>
+
+<span class="co">#load image to project</span>
+file = matopen(joinpath(dirname(pathof(SetIntersectionProjection)), <span class="st">&quot;../examples/Data/compass_velocity.mat&quot;</span>))
+m    = read(file, <span class="st">&quot;Data&quot;</span>);close(file)
+m    = m[<span class="fl">1</span>:<span class="fl">341</span>,<span class="fl">200</span>:<span class="fl">600</span>]
+m    = permutedims(m,[<span class="fl">2</span>,<span class="fl">1</span>])
+
+<span class="co">#set up computational grid (25 and 6 m are the original distances between grid points)</span>
+comp_grid = compgrid((TF(<span class="fl">25.0</span>), TF(<span class="fl">6.0</span>)),(size(m,<span class="fl">1</span>), size(m,<span class="fl">2</span>)))
+m         = convert(<span class="dt">Vector</span>{TF},vec(m))</code></pre>
+<p>Now we are ready to define multiple constraints for the model, as well as for each of the two components in the Generalized Minkowsi set.</p>
+<p>First we define constraints for the model parameters itself (the sum of the two components).</p>
+<pre class="sourceCode julia"><code class="sourceCode julia">
+<span class="co">#constraints for total model</span>
+constraint_sum = <span class="dt">Vector</span>{SetIntersectionProjection.set_definitions}()
+
+<span class="co">#bounds:</span>
+m_min     = <span class="fl">1500.0</span>
+m_max     = <span class="fl">4500.0</span>
+set_type  = <span class="st">&quot;bounds&quot;</span>
+TD_OP     = <span class="st">&quot;identity&quot;</span>
+app_mode  = (<span class="st">&quot;matrix&quot;</span>,<span class="st">&quot;&quot;</span>)
+custom_TD_OP = ([],false)
+push!(constraint_sum, set_definitions(set_type,TD_OP,m_min,m_max,app_mode,custom_TD_OP))</code></pre>
+<p>Second, we define constraints for component 1. We use bound constraints and monotonically increasing parameter values in the vertical direction.</p>
+<pre class="sourceCode julia"><code class="sourceCode julia">
+<span class="co">#constraints for component 1 of the model</span>
+constraint_c1 = <span class="dt">Vector</span>{SetIntersectionProjection.set_definitions}()
+
+<span class="co">#bounds component 1:</span>
+m_min     = <span class="fl">1500</span>f0*ones(TF,prod(comp_grid.n))
+m_max     = <span class="fl">4500</span>f0.*ones(TF,comp_grid.n)
+m_max[:,<span class="fl">1</span>:<span class="fl">35</span>] .= <span class="fl">1500</span>f0
+m_max     = vec(m_max)
+set_type  = <span class="st">&quot;bounds&quot;</span>
+TD_OP     = <span class="st">&quot;identity&quot;</span>
+app_mode  = (<span class="st">&quot;matrix&quot;</span>,<span class="st">&quot;&quot;</span>)
+custom_TD_OP = ([],false)
+push!(constraint_c1, set_definitions(set_type,TD_OP,m_min,m_max,app_mode,custom_TD_OP))
+
+<span class="co">#slope constraints component 1(vertical)</span>
+m_min     = <span class="fl">0.0</span>
+m_max     = <span class="fl">1e6</span>
+set_type  = <span class="st">&quot;bounds&quot;</span>
+TD_OP     = <span class="st">&quot;D_z&quot;</span>
+app_mode  = (<span class="st">&quot;matrix&quot;</span>,<span class="st">&quot;&quot;</span>)
+custom_TD_OP = ([],false)
+push!(constraint_c1, set_definitions(set_type,TD_OP,m_min,m_max,app_mode,custom_TD_OP))</code></pre>
+<p>Now we define the constraints for the second component. We use bounds and low-rank constraints.</p>
+<pre class="sourceCode julia"><code class="sourceCode julia"><span class="co">#constraints for component 2 of the model</span>
+constraint_c2 = <span class="dt">Vector</span>{SetIntersectionProjection.set_definitions}()
+
+<span class="co">#bounds component 2:</span>
+m_min     = -<span class="fl">500.0</span>
+m_max     = <span class="fl">500.0</span>
+set_type  = <span class="st">&quot;bounds&quot;</span>
+TD_OP     = <span class="st">&quot;identity&quot;</span>
+app_mode  = (<span class="st">&quot;matrix&quot;</span>,<span class="st">&quot;&quot;</span>)
+custom_TD_OP = ([],false)
+push!(constraint_c2, set_definitions(set_type,TD_OP,m_min,m_max,app_mode,custom_TD_OP))
+
+<span class="co">#rank constraint component 2</span>
+m_min     = <span class="fl">0</span>
+m_max     = <span class="fl">20</span>
+set_type  = <span class="st">&quot;rank&quot;</span>
+TD_OP     = <span class="st">&quot;identity&quot;</span>
+app_mode  = (<span class="st">&quot;matrix&quot;</span>,<span class="st">&quot;&quot;</span>)
+custom_TD_OP = ([],false)
+push!(constraint_c2, set_definitions(set_type,TD_OP,m_min,m_max,app_mode,custom_TD_OP))</code></pre>
+<p>So far, we defined what constraints we would like to use. The next step is to use the provide scripts to generate constraint set information, projectors, and linear operators.</p>
+<pre class="sourceCode julia"><code class="sourceCode julia">(P_sub_sum,TD_OP_sum,set_Prop_sum) = setup_constraints(constraint_sum,comp_grid,options.FL)
+(P_sub_c1,TD_OP_c1,set_Prop_c1) = setup_constraints(constraint_c1,comp_grid,options.FL)
+(P_sub_c2,TD_OP_c2,set_Prop_c2) = setup_constraints(constraint_c2,comp_grid,options.FL)</code></pre>
+<p>Now we have projectors onto simple sets and linear operators, for each component and the sum separately. We’ll run a script to unify and generate input for the PARSDMM algorithm. The code block below also precomputes certain quantities and distributes things over julia workers if we were to use it in parallel mode</p>
+<pre class="sourceCode julia"><code class="sourceCode julia">options.Minkowski = true <span class="co">#do not forget to set this flag to true!</span>
+
+(TD_OP,set_Prop,AtA,l,y) = PARSDMM_precompute_distribute_Minkowski(TD_OP_c1,TD_OP_c2,TD_OP_sum,set_Prop_c1,set_Prop_c2,set_Prop_sum,comp_grid,options)</code></pre>
+<p>We now put all our function calls to projectors in one vector.</p>
+<pre class="sourceCode julia"><code class="sourceCode julia">P_sub = deepcopy(P_sub_c1);
+append!(P_sub,P_sub_c2)
+append!(P_sub,P_sub_sum)</code></pre>
+<p>We are ready to solve the projection problem onto the generalized Minkowski sum.</p>
+<pre class="sourceCode julia"><code class="sourceCode julia">@time (x,log_PARSDMM) = PARSDMM(m,AtA,TD_OP,set_Prop,P_sub,comp_grid,options);
+@time (x,log_PARSDMM) = PARSDMM(m,AtA,TD_OP,set_Prop,P_sub,comp_grid,options);</code></pre>
+<p>Let’s plot the results (this example uses PyPlot)</p>
+<pre class="sourceCode julia"><code class="sourceCode julia">ENV[<span class="st">&quot;MPLBACKEND&quot;</span>]=<span class="st">&quot;qt5agg&quot;</span>
+using PyPlot
+
+m1 = x[<span class="fl">1</span>:length(m)]     <span class="co">#component 1</span>
+m2 = x[<span class="fl">1</span>+length(m):<span class="kw">end</span>] <span class="co">#component 2</span>
+ms = m1+m2;             <span class="co">#sum of components</span>
+
+<span class="co">#define axis limits and colorbar limits</span>
+xmax = comp_grid.d[<span class="fl">1</span>]*comp_grid.n[<span class="fl">1</span>]
+zmax = comp_grid.d[<span class="fl">2</span>]*comp_grid.n[<span class="fl">2</span>]
+vmi  = <span class="fl">1500</span>
+vma  = <span class="fl">4500</span>
+
+figure();imshow(permutedims(reshape(m,(comp_grid.n[<span class="fl">1</span>],comp_grid.n[<span class="fl">2</span>])),[<span class="fl">2</span>,<span class="fl">1</span>]),cmap=<span class="st">&quot;jet&quot;</span>,vmin=vmi,vmax=vma,extent=[<span class="fl">0</span>,  xmax, zmax, <span class="fl">0</span>]); title(<span class="st">&quot;model to project&quot;</span>)
+savefig(<span class="st">&quot;original_model.png&quot;</span>,bbox_inches=<span class="st">&quot;tight&quot;</span>)
+figure();imshow(permutedims(reshape(m1,(comp_grid.n[<span class="fl">1</span>],comp_grid.n[<span class="fl">2</span>])),[<span class="fl">2</span>,<span class="fl">1</span>]),cmap=<span class="st">&quot;jet&quot;</span>,vmin=vmi,vmax=vma,extent=[<span class="fl">0</span>,  xmax, zmax, <span class="fl">0</span>]); title(<span class="st">&quot;Projection (component 1)&quot;</span>)
+savefig(<span class="st">&quot;projected_model_component1.png&quot;</span>,bbox_inches=<span class="st">&quot;tight&quot;</span>)
+figure();imshow(permutedims(reshape(m2,(comp_grid.n[<span class="fl">1</span>],comp_grid.n[<span class="fl">2</span>])),[<span class="fl">2</span>,<span class="fl">1</span>]),cmap=<span class="st">&quot;jet&quot;</span>,vmin=-<span class="fl">1500</span>,vmax=<span class="fl">1500</span>,extent=[<span class="fl">0</span>,  xmax, zmax, <span class="fl">0</span>]); title(<span class="st">&quot;Projection (component 2)&quot;</span>)
+savefig(<span class="st">&quot;projected_model_component2.png&quot;</span>,bbox_inches=<span class="st">&quot;tight&quot;</span>)
+figure();imshow(permutedims(reshape(ms,(comp_grid.n[<span class="fl">1</span>],comp_grid.n[<span class="fl">2</span>])),[<span class="fl">2</span>,<span class="fl">1</span>]),cmap=<span class="st">&quot;jet&quot;</span>,vmin=vmi,vmax=vma,extent=[<span class="fl">0</span>,  xmax, zmax, <span class="fl">0</span>]); title(<span class="st">&quot;Projection (sum of components)&quot;</span>)
+savefig(<span class="st">&quot;projected_model_sum_components.png&quot;</span>,bbox_inches=<span class="st">&quot;tight&quot;</span>)
+
+figure();
+subplot(<span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">3</span>);semilogy(log_PARSDMM.r_pri)          ;title(<span class="st">&quot;r primal&quot;</span>)
+subplot(<span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">4</span>);semilogy(log_PARSDMM.r_dual)         ;title(<span class="st">&quot;r dual&quot;</span>)
+subplot(<span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">1</span>);semilogy(log_PARSDMM.obj)            ;title(L<span class="st">&quot;$ </span>\f<span class="st">rac{1}{2} || \mathbf{m}-\mathbf{x} ||_2^2 $&quot;</span>)
+subplot(<span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">2</span>);semilogy(log_PARSDMM.set_feasibility);title(<span class="st">&quot;TD feasibility violation&quot;</span>)
+subplot(<span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">5</span>);plot(log_PARSDMM.cg_it)              ;title(<span class="st">&quot;nr. of CG iterations&quot;</span>)
+subplot(<span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">6</span>);semilogy(log_PARSDMM.cg_relres)      ;title(<span class="st">&quot;CG rel. res.&quot;</span>)
+subplot(<span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">7</span>);semilogy(log_PARSDMM.rho)            ;title(<span class="st">&quot;rho&quot;</span>)
+subplot(<span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">8</span>);plot(log_PARSDMM.gamma)              ;title(<span class="st">&quot;gamma&quot;</span>)
+subplot(<span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">9</span>);semilogy(log_PARSDMM.evol_x)         ;title(<span class="st">&quot;x evolution&quot;</span>)
+tight_layout()
+<span class="co">#tight_layout(pad=0.0, w_pad=0.0, h_pad=1.0)</span>
+savefig(<span class="st">&quot;PARSDMM_logs.png&quot;</span>,bbox_inches=<span class="st">&quot;tight&quot;</span>)</code></pre>
+<figure class="scholmd-float scholmd-figure" id="fig:intro-ex">
+<div class="scholmd-float-content"><figure class="scholmd-subfig" style="display: inline-block; width: 100%">
+<img src="docs/Figures/original_model.png" />
+</figure><br /><figure class="scholmd-subfig" style="display: inline-block; width: 100%">
+<img src="docs/Figures/projected_model_component1.png" />
+</figure><br /><figure class="scholmd-subfig" style="display: inline-block; width: 100%">
+<img src="docs/Figures/projected_model_component2.png" />
+</figure><br /><figure class="scholmd-subfig" style="display: inline-block; width: 100%">
+<img src="docs/Figures/PARSDMM_logs.png" />
+</figure></div>
+<div class="scholmd-float-caption"><figcaption><span class="scholmd-caption-head"><span class="scholmd-caption-head-prefix">Figure</span><span class="scholmd-caption-head-label">1</span></span><span class="scholmd-caption-text">A model, its projection onto the generaliez Minkowski set, as well as various diagnostics from the PARSDMM algorithm.</span></figcaption></div>
 </figure>
 <p>.</p>
 <div class="references">
