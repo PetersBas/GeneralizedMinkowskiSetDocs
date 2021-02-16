@@ -13097,12 +13097,11 @@ where $A_i$, $B_i$, and $C_i$ are different linear operators of each $i$, $j$, a
 <li>as a plug-in projector for other algorithms that solve
   $\min_m f(m) \:\: \text{s.t.} \:\: m \in \mathcal{M}$
   , e.g., a (spectral) projected gradient / projected quasi-Newton / projected-Newton method. </li>
-<li>as a solver for linear inverse problem with a linear forward operator $F \in \mathbb{R}^{M \times N}$, data constraints such as $\mathcal{C}^\text{data} = \{ x \: | \: \| Fx - d_\text{observed} \|_2 \leq \sigma \}$, and model property constraints formulated as
-  \begin{equation}
-  \min_{x} \frac{1}{2} \| x - m \|_2^2 \quad \text{s.t.} \quad x \in \mathcal{M} \bigcap \mathcal{C}^{\text{data}}
-  \end{equation}</li>
+<li>as a solver for linear inverse problem with a linear forward operator $F \in \mathbb{R}^{M \times N}$, data constraints such as $\mathcal{C}^\text{data} = \{ x \: | \: \| Fx - d_\text{observed} \|_2 \leq \sigma \}$, and model property constraints formulated as</li>
 </ul>
-<h2 id="Applications">Applications<a class="anchor-link" href="#Applications">&#182;</a></h2><ul>
+\begin{equation}
+    \min_{x} \frac{1}{2} \| x - m \|_2^2 \quad \text{s.t.} \quad x \in \mathcal{M} \bigcap \mathcal{C}^{\text{data}}
+\end{equation}<h2 id="Applications">Applications<a class="anchor-link" href="#Applications">&#182;</a></h2><ul>
 <li>Generalized Minkowski decomposition of a video <a href="https://github.com/slimgroup/SetIntersectionProjection.jl/blob/master/examples/GeneralizedMinkowski/Minkowski_video_decomposition.jl">script</a> / <a href="https://github.com/slimgroup/SetIntersectionProjection.jl/blob/master/examples/GeneralizedMinkowski/example_2D_Minkowski_projection.ipynb">notebook</a></li>
 <li>Generalized Minkowski projection and decompositions of a geological model <a href="https://github.com/slimgroup/SetIntersectionProjection.jl/blob/master/examples/GeneralizedMinkowski/example_2D_Minkowski_projection.jl">script</a> / <a href="https://github.com/slimgroup/SetIntersectionProjection.jl/blob/master/examples/GeneralizedMinkowski/Minkowski_video_decomposition.ipynb">notebook</a></li>
 <li>Training a neural network for image segmentations using generalized minkowski constraints on the network output. Cameraman <a href="https://github.com/slimgroup/SetIntersectionProjection.jl/blob/master/examples/GeneralizedMinkowski/ConstrainedNeuralNetworkSegmentation_cameraman.jl">script</a>/<a href="https://github.com/slimgroup/SetIntersectionProjection.jl/blob/master/examples/GeneralizedMinkowski/ConstrainedNeuralNetworkSegmentation_cameraman.ipynb">notebook</a> , zebra <a href="https://github.com/slimgroup/SetIntersectionProjection.jl/blob/master/examples/GeneralizedMinkowski/ConstrainedNeuralNetworkSegmentation_zebra.jl">script</a> / <a href="https://github.com/slimgroup/SetIntersectionProjection.jl/blob/master/examples/GeneralizedMinkowski/ConstrainedNeuralNetworkSegmentation_zebra.ipynb">notebook</a></li>
@@ -13116,7 +13115,7 @@ where $A_i$, $B_i$, and $C_i$ are different linear operators of each $i$, $j$, a
 <li>constraints may be defined for the matrix/tensor model and for columns/slices/fibers simultaneously</li>
 <li>linear operators may be: SparseMatrixCSC or <a href="https://github.com/slimgroup/JOLI.jl">JOLI</a> DCT/DFT/Curvelet matrix-free operators. Software internally converts sparse matrices to compressed diagonal (CDS) format for MVPs where appropriate.</li>
 </ul>
-<h2 id="List-of-constraints-&amp;-linear-operators">List of constraints &amp; linear operators<a class="anchor-link" href="#List-of-constraints-&amp;-linear-operators">&#182;</a></h2><p>Overview of constraint sets that the software currently supports. A new constraint set may be added by providing a projection onto the set (without linear operator) and a sparse linear operator or equivalent matrix-vector product together with its adjoint. Vector entries are indexed as $m[i]$.</p>
+<h2 id="List-of-constraints-&amp;-linear-operators">List of constraints &amp; linear operators<a class="anchor-link" href="#List-of-constraints-&amp;-linear-operators">&#182;</a></h2><p>Overview of constraint sets that the software currently supports. A new constraint set may be added by providing a projection onto the set (without linear operator) and a sparse linear operator or equivalent matrix-vector product together with its adjoint.</p>
 <table>
 <thead><tr>
 <th>descriptions</th>
@@ -13125,49 +13124,40 @@ where $A_i$, $B_i$, and $C_i$ are different linear operators of each $i$, $j$, a
 </thead>
 <tbody>
 <tr>
+<td>$\{ m \: \mid \: l \leq m \leq u \}$</td>
 <td>bounds</td>
-<td>${ m \:</td>
-<td>\: l[i] \leq m[i] \leq u[i] }$</td>
 </tr>
 <tr>
 <td>transform-domain bounds</td>
-<td>${ m \:</td>
-<td>\: l[i] \leq (A m)[i] \leq b[i] }$</td>
+<td>$\{ m \: \mid \: l \leq (A m)[i] \leq u \}$</td>
 </tr>
 <tr>
 <td>transform-domain $\ell_1$</td>
-<td>${ m \:</td>
-<td>\: | A m |_1 \leq \sigma }$</td>
+<td>$\{ m \: \mid \: | A m |_1 \leq \sigma \}$</td>
 </tr>
 <tr>
 <td>transform-domain $\ell_2$</td>
-<td>${ m \:</td>
-<td>\: | A m |_2 \leq \sigma }$</td>
+<td>$\{ m \: \mid \: | A m |_2 \leq \sigma \}$</td>
 </tr>
 <tr>
 <td>transform-domain annulus</td>
-<td>${ m \:</td>
-<td>\: \sigma_l \leq | A m |_2 \leq \sigma_u }$</td>
+<td>$\{ m \: \mid \: \sigma_l \leq | A m |_2 \leq \sigma_u \}$</td>
 </tr>
 <tr>
 <td>transform-domain cardinality</td>
-<td>${ m \:</td>
-<td>\: \text{card}(Am) \leq k }$, $k$ is a positive integer</td>
+<td>$\{ m \: \mid \: \text{card}(Am) \leq k \}$, $k$ is a positive integer</td>
 </tr>
 <tr>
 <td>transform-domain nuclear norm</td>
-<td>${ m \:</td>
-<td>\: \sum<em>{j=1}^k \lambda[j] \leq \sigma }$, with $Am = \operatorname{vec}( \sum</em>{j=1}^{k}\lambda[j] u_j v_j^\top )$ is the SVD</td>
+<td>$\{ m \: \mid \: \sum_{j=1}^k \lambda[j] \leq \sigma \}$, with $Am = \operatorname{vec}( \sum_{j=1}^{k}\lambda[j] u_j v_j^\top )$ is the SVD</td>
 </tr>
 <tr>
 <td>transform-domain rank constraint</td>
-<td>${ m \:</td>
-<td>\:  Am = \operatorname{vec}( \sum_{j=1}^{r}\lambda[j] u_j v_j^\top) }$, $r &lt; \text{min}(n_z,n_x)$</td>
+<td>$\{ m \: \mid \:  Am = \operatorname{vec}( \sum_{j=1}^{r}\lambda[j] u_j v_j^\top) \}$, $r &lt; \text{min}(n_z,n_x)$</td>
 </tr>
 <tr>
 <td>subspace constraints</td>
-<td>${ m \:</td>
-<td>m = A c, \:\: c \in \mathbb{C}^M }$</td>
+<td>$\{ m \: \mid m = A c, \:\: c \in \mathbb{C}^M \}$</td>
 </tr>
 </tbody>
 </table>
